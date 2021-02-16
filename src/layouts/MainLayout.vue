@@ -4,7 +4,7 @@
       <q-toolbar class="constrain">
         <q-btn flat round to="/camera" icon="las la-camera" size="18px" dense class="large-screen-only q-mr-sm" />
         <q-separator vertical inset spaced class="large-screen-only" />
-        <q-toolbar-title class="text-bold text-grand-hotel"
+        <q-toolbar-title class="text-weight-medium text-grand-hotel"
           >Quasagram</q-toolbar-title
         >
         <q-btn flat round to="/" icon="las la-home" size="18px" dense class="large-screen-only" />
@@ -23,7 +23,7 @@
       </q-tabs>
     </q-footer>
 
-    <q-page-container>
+    <q-page-container class="bg-grey-1">
       <router-view />
     </q-page-container>
   </q-layout>
