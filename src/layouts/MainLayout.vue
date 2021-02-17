@@ -22,7 +22,7 @@
                     dense
                     class="large-screen-only q-mr-sm q-mr-sm"
                 />
-                <q-item-section avatar>
+                <q-item-section avatar class="large-screen-only">
                     <q-avatar size="23px">
                         <img
                             src="https://avatars.githubusercontent.com/u/46294299?s=460&u=205425f2a3c752dd73448ca8b6b329edb30a948f&v=4"
