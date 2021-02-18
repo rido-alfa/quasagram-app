@@ -40,7 +40,7 @@
         <div class="row justify-center q-ma-md">
             <q-input v-model="post.location" class="col col-sm-8" dense borderless label="Location">
                 <template v-slot:append>
-                    <q-btn round dense flat icon="ion-pin" size="10px" />
+                    <q-btn @click="getLocation" round dense flat icon="ion-pin" size="10px" />
                 </template>
             </q-input>
         </div>
@@ -99,7 +99,7 @@ export default {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             this.imageCaptured = true;
             this.post.photo = this.dataURItoBlob(canvas.toDataURL());
-            this.disableCamera()
+            this.disableCamera();
         },
 
         captureImageFallback(file) {
@@ -114,7 +114,7 @@ export default {
                     canvas.width = img.width;
                     canvas.height = img.height;
                     context.drawImage(img, 0, 0);
-                    this.imageCaptured = true
+                    this.imageCaptured = true;
                 };
                 img.src = event.target.result;
             };
@@ -123,8 +123,8 @@ export default {
 
         disableCamera() {
             this.$refs.video.srcObject.getVideoTracks().forEach(track => {
-                track.stop()                
-            })
+                track.stop();
+            });
         },
 
         dataURItoBlob(dataURI) {
@@ -152,6 +152,44 @@ export default {
             // write the ArrayBuffer to a blob, and you're done
             var blob = new Blob([ab], { type: mimeString });
             return blob;
+        },
+
+        getLocation() {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    this.getCityCountry(position);
+                },
+                err => {
+                    this.locationError();
+                },
+                { timeout: 3000 }
+            );
+        },
+
+        getCityCountry(position) {
+            let apiUrl = `https://geocode.xyz/${position.coords.latitude},${position.coords.longitude}?json=1`;
+            this.$axios
+                .get(apiUrl)
+                .then(result => {
+                    this.locationSuccess(result);
+                })
+                .catch(err => {
+                    this.locationError();
+                });
+        },
+
+        locationSuccess(result) {
+            this.post.location = result.data.city;
+            if (result.data.country) {
+                this.post.location += `, ${result.data.country}`;
+            }
+        },
+
+        locationError() {
+            this.$q.dialog({
+                title: "Error",
+                message: "Cannot find your location"
+            });
         }
     },
 
@@ -159,8 +197,8 @@ export default {
         this.initCamera();
     },
     beforeDestroy() {
-        if(this.hasCameraSupport) {
-            this.disableCamera()
+        if (this.hasCameraSupport) {
+            this.disableCamera();
         }
     }
 };
