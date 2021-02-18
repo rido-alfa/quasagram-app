@@ -38,9 +38,24 @@
             />
         </div>
         <div class="row justify-center q-ma-md">
-            <q-input v-model="post.location" class="col col-sm-8" dense borderless label="Location">
+            <q-input
+                :loading="formLoading"
+                v-model="post.location"
+                class="col col-sm-8"
+                dense
+                borderless
+                label="Location"
+            >
                 <template v-slot:append>
-                    <q-btn @click="getLocation" round dense flat icon="ion-pin" size="10px" />
+                    <q-btn
+                        v-if="!formLoading && locationSupport"
+                        @click="getLocation"
+                        round
+                        dense
+                        flat
+                        icon="ion-pin"
+                        size="10px"
+                    />
                 </template>
             </q-input>
         </div>
@@ -70,8 +85,16 @@ export default {
             },
             imageCaptured: false,
             imageUpload: [],
-            hasCameraSupport: true
+            hasCameraSupport: true,
+            formLoading: false
         };
+    },
+
+    computed: {
+        locationSupport() {
+            if ("geolocation" in navigator) return true;
+            return false;
+        }
     },
 
     methods: {
@@ -155,6 +178,7 @@ export default {
         },
 
         getLocation() {
+            this.formLoading = true;
             navigator.geolocation.getCurrentPosition(
                 position => {
                     this.getCityCountry(position);
@@ -183,19 +207,22 @@ export default {
             if (result.data.country) {
                 this.post.location += `, ${result.data.country}`;
             }
+            this.formLoading = false;
         },
 
         locationError() {
             this.$q.dialog({
                 title: "Error",
-                message: "Cannot find your location"
+                message: "Couldnt find your location"
             });
+            this.formLoading = false;
         }
     },
 
     mounted() {
         this.initCamera();
     },
+
     beforeDestroy() {
         if (this.hasCameraSupport) {
             this.disableCamera();
