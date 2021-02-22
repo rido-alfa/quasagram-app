@@ -14,7 +14,7 @@
                             <q-item-section avatar>
                                 <q-avatar>
                                     <img
-                                        src="https://avatars.githubusercontent.com/u/46294299?s=460&u=205425f2a3c752dd73448ca8b6b329edb30a948f&v=4"
+                                        src=""
                                     />
                                 </q-avatar>
                             </q-item-section>
@@ -153,7 +153,7 @@
                         <q-item-section avatar>
                             <q-avatar size="60px">
                                 <img
-                                    src="https://avatars.githubusercontent.com/u/46294299?s=460&u=205425f2a3c752dd73448ca8b6b329edb30a948f&v=4"
+                                    src=""
                                 />
                             </q-avatar>
                         </q-item-section>
