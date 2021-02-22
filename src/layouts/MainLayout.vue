@@ -3,7 +3,7 @@
         <q-header class="text-grey-10 bg-white" bordered>
 			
             <q-toolbar class="constrain">
-                <q-toolbar-title class="text-weight-medium text-grand-hotel">Quasagram</q-toolbar-title>
+                <q-toolbar-title class="text-weight-medium text-grand-hotel">Fakegram</q-toolbar-title>
                 <q-btn
                     flat
                     round
@@ -25,7 +25,7 @@
                 <q-item-section avatar class="large-screen-only">
                     <q-avatar size="23px">
                         <img
-                            src="https://avatars.githubusercontent.com/u/46294299?s=460&u=205425f2a3c752dd73448ca8b6b329edb30a948f&v=4"
+                            src=""
                         />
                     </q-avatar>
                 </q-item-section>
