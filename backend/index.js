@@ -1,23 +1,35 @@
 // dependencies
 const express = require("express");
+const admin = require("firebase-admin");
 
 // config-express
 const app = express();
 
-// endpoint
-app.get("/", (request, response) => {
-  let posts = [
-    {
-      caption: "Dimana ini ",
-      location: "Serang Banten"
-    },
-    {
-      caption: "Dimana ini cuk ",
-      location: "Cilegon Banten"
-    }
-  ]
+// config firebase-admin
+const serviceAccount = require("./serviceAccountKey.json");
 
-  response.send(posts);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
+
+// endpoint
+app.get("/posts", (request, response) => {
+  let posts = [];
+  db.collection("posts")
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        console.log(doc.id, "=>", doc.data());
+        posts.push(doc.data())
+      });
+      response.send(posts);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
 });
 
 // listen
