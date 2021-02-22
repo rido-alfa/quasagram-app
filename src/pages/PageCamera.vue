@@ -60,7 +60,7 @@
             </q-input>
         </div>
         <div class="row justify-center q-ma-md">
-            <q-btn rounded unelevated color="red-5">
+            <q-btn @click="addPost()" rounded unelevated color="red-5">
                 <q-icon name="ion-add-circle-outline" size="20px" class="q-mr-xs" />
                 <div>Post</div>
             </q-btn>
@@ -216,6 +216,23 @@ export default {
                 message: "Couldnt find your location"
             });
             this.formLoading = false;
+        },
+
+        addPost() {
+            let formData = new FormData();
+            formData.append("id", this.post.id);
+            formData.append("caption", this.post.caption);
+            formData.append("location", this.post.location);
+            formData.append("date", this.post.date);
+            formData.append("file", this.post.photo, this.post.id + ".png");
+            this.$axios
+                .post(`${process.env.API}/createPost`, formData)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
 

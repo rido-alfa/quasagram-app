@@ -2,7 +2,7 @@
     <q-page class="constrain q-py-md q-px-lg home-page">
         <div class="row q-col-gutter-sm">
             <div class="col-12 col-sm-8">
-                <template v-if="!loadingPost">
+                <template v-if="!loadingPost && posts.length">
                     <q-card
                         class="card-post q-mb-md"
                         flat
@@ -82,11 +82,16 @@
                         </q-card-section>
                     </q-card>
                 </template>
+                <template v-else-if="!loadingPost && !posts.length">
+                    <h5 class="text-center text-grey-6">
+                        Not Post
+                    </h5>
+                </template>
                 <template v-else>
                     <q-card flat bordered class="q-mb-md">
                         <q-item>
                             <q-item-section avatar>
-                                <q-skeleton type="QAvatar" animation="fade" />
+                                <q-skeleton size="40px" type="QAvatar" animation="fade" />
                             </q-item-section>
 
                             <q-item-section>
@@ -178,23 +183,21 @@ export default {
     methods: {
         getPosts() {
             this.loadingPost = true;
-            setTimeout(() => {
-                this.$axios
-                    .get("http://localhost:3000/posts")
-                    .then(response => {
-                        console.log(response);
-                        this.posts = response.data;
-                        this.loadingPost = false;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        this.$q.dialog({
-                            title: "Error",
-                            message: "Could not load posts!"
-                        });
-                        this.loadingPost = false;
+            this.$axios
+                .get(`${ process.env.API }/posts`)
+                .then(response => {
+                    console.log(response);
+                    this.posts = response.data;
+                    this.loadingPost = false;
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.$q.dialog({
+                        title: "Error",
+                        message: "Could not load posts!"
                     });
-            }, 3000);
+                    this.loadingPost = false;
+                });
         }
     },
 
