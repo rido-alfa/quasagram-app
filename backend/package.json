@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "deploy": "heroku builds:create -a fakegram-app-backend"
+    "deploy": "heroku builds:create -a name-app-in-heroku"
   },
   "license": "MIT",
   "dependencies": {
