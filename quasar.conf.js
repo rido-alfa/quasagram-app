@@ -7,7 +7,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 let API_LOCAL = 'http://localhost:3000'
-    API_PRODUCTION = 'https://fakegram-app-backend.herokuapp.com'
+    API_PRODUCTION = ''
 
 module.exports = function (/* ctx */) {
   return {
