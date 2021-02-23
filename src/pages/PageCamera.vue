@@ -8,6 +8,7 @@
             <q-btn
                 v-if="hasCameraSupport"
                 @click="captureImage"
+                :disable="imageCaptured"
                 unelevated
                 round
                 color="grey-10"
@@ -60,7 +61,13 @@
             </q-input>
         </div>
         <div class="row justify-center q-ma-md">
-            <q-btn @click="addPost()" rounded unelevated color="red-5">
+            <q-btn
+                :disable="!post.caption || !post.photo"
+                @click="addPost()"
+                rounded
+                unelevated
+                color="red-5"
+            >
                 <q-icon name="ion-add-circle-outline" size="20px" class="q-mr-xs" />
                 <div>Post</div>
             </q-btn>
@@ -219,6 +226,8 @@ export default {
         },
 
         addPost() {
+            this.$q.loading.show();
+
             let formData = new FormData();
             formData.append("id", this.post.id);
             formData.append("caption", this.post.caption);
@@ -228,10 +237,25 @@ export default {
             this.$axios
                 .post(`${process.env.API}/createPost`, formData)
                 .then(response => {
-                    console.log(response);
+                    this.$router.push("/");
+                    this.$q.notify({
+                        message: "Post wa created!",
+                        actions: [
+                            {
+                                label: "Dismiss",
+                                color: "white"
+                            }
+                        ]
+                    });
+                    this.$q.loading.hide();
                 })
                 .catch(err => {
                     console.log(err);
+                    this.$q.dialog({
+                        title: "Error",
+                        message: "Sorry, Couldnt create post!"
+                    });
+                    this.$q.loading.hide();
                 });
         }
     },
